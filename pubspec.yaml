@@ -1,0 +1,33 @@
+name: subway
+description: "Subway Order Planner Flutter application for SOFE 4640U."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.14.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: ^1.1.0
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/

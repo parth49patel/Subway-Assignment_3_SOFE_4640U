@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'database/database_helper.dart';
-import 'models/food_item.dart';
+import 'screens/order_planner_screen.dart';
 import 'theme/app_theme.dart';
 
 /// Entry point of the Subway Planner application; ensures bindings are initialized for SQLite.
@@ -9,7 +8,7 @@ void main() async {
   runApp(const SubwayApp());
 }
 
-/// Root widget configuring the app title, Material 3 Subway theme, and initial menu screen.
+/// Root widget configuring the app title, Material 3 Subway theme, and main navigation shell.
 class SubwayApp extends StatelessWidget {
   const SubwayApp({super.key});
 
@@ -20,39 +19,31 @@ class SubwayApp extends StatelessWidget {
       title: 'Subway Planner',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const MenuScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }
 
-/// Home screen displaying the seeded Subway menu items and their prices from SQLite.
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+/// Main navigation shell hosting the Order Planner, Saved Plans, and Menu Management tabs.
+class MainNavigationScreen extends StatefulWidget {
+  const MainNavigationScreen({super.key});
 
   @override
-  State<MenuScreen> createState() => _MenuScreenState();
+  State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
-/// State class responsible for asynchronously loading and rendering the Subway menu list.
-class _MenuScreenState extends State<MenuScreen> {
-  /// Future holding the list of food items queried from the local SQLite database.
-  late Future<List<FoodItem>> _menuFuture;
+/// State class tracking the active bottom navigation tab index.
+class _MainNavigationScreenState extends State<MainNavigationScreen> {
+  int _selectedIndex = 0;
 
-  /// Initializes state and triggers the initial database query on screen load.
-  @override
-  void initState() {
-    super.initState();
-    _loadMenu();
-  }
+  /// List of top-level screens corresponding to each bottom navigation destination.
+  final List<Widget> _screens = const [
+    OrderPlannerScreen(),
+    Center(child: Text('Saved Order Plans (Coming Soon)')),
+    Center(child: Text('Manage Menu Items (Coming Soon)')),
+  ];
 
-  /// Fetches all seeded food items from DatabaseHelper and updates the UI state.
-  void _loadMenu() {
-    setState(() {
-      _menuFuture = DatabaseHelper.instance.getAllFoodItems();
-    });
-  }
-
-  /// Builds the scaffold with the branded AppBar and FutureBuilder list of food items.
+  /// Builds the scaffold with the Subway branded AppBar, active screen body, and NavigationBar.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,72 +66,38 @@ class _MenuScreenState extends State<MenuScreen> {
             ),
             const SizedBox(width: 10),
             const Text(
-              'Subway Menu',
+              'Subway Planner',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
       ),
-      body: FutureBuilder<List<FoodItem>>(
-        future: _menuFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error loading menu: ${snapshot.error}'));
-          }
-
-          final items = snapshot.data ?? [];
-          if (items.isEmpty) {
-            return const Center(child: Text('No food items found.'));
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(12),
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index];
-              return Card(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Theme.of(context)
-                        .colorScheme
-                        .primary
-                        .withValues(alpha: 0.12),
-                    child: Icon(
-                      Icons.fastfood,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  title: Text(
-                    item.name,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  subtitle: Text(item.category),
-                  trailing: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.secondary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      '\$${item.cost.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppTheme.textDark,
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        indicatorColor: AppTheme.subwayYellow,
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
         },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.shopping_bag_outlined),
+            selectedIcon: Icon(Icons.shopping_bag),
+            label: 'Plan Order',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.history_outlined),
+            selectedIcon: Icon(Icons.history),
+            label: 'Saved Plans',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.restaurant_menu_outlined),
+            selectedIcon: Icon(Icons.restaurant_menu),
+            label: 'Menu',
+          ),
+        ],
       ),
     );
   }

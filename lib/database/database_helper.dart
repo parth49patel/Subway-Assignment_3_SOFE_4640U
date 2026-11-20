@@ -1,6 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/food_item.dart';
+import '../models/order_plan.dart';
 
 /// Singleton helper class managing SQLite database initialization, seeding, and queries.
 class DatabaseHelper {
@@ -109,5 +110,12 @@ class DatabaseHelper {
       orderBy: 'category ASC, name ASC',
     );
     return result.map((map) => FoodItem.fromMap(map)).toList();
+  }
+
+  /// Inserts a new daily order plan into the order_plans table and returns its generated row ID.
+  Future<int> insertOrderPlan(OrderPlan plan) async {
+    final db = await instance.database;
+    final data = plan.toMap()..remove('id');
+    return await db.insert('order_plans', data);
   }
 }

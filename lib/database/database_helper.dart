@@ -118,4 +118,26 @@ class DatabaseHelper {
     final data = plan.toMap()..remove('id');
     return await db.insert('order_plans', data);
   }
+
+  /// Retrieves all saved order plans ordered by date descending (newest first).
+  Future<List<OrderPlan>> getAllOrderPlans() async {
+    final db = await instance.database;
+    final result = await db.query(
+      'order_plans',
+      orderBy: 'date DESC, id DESC',
+    );
+    return result.map((map) => OrderPlan.fromMap(map)).toList();
+  }
+
+  /// Queries saved order plans matching an exact YYYY-MM-DD date string.
+  Future<List<OrderPlan>> getOrderPlansByDate(String date) async {
+    final db = await instance.database;
+    final result = await db.query(
+      'order_plans',
+      where: 'date = ?',
+      whereArgs: [date],
+      orderBy: 'id DESC',
+    );
+    return result.map((map) => OrderPlan.fromMap(map)).toList();
+  }
 }

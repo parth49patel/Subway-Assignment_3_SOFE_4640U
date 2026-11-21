@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/order_planner_screen.dart';
+import 'screens/saved_plans_screen.dart';
 import 'theme/app_theme.dart';
 
 /// Entry point of the Subway Planner application; ensures bindings are initialized for SQLite.
@@ -39,8 +40,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   /// List of top-level screens corresponding to each bottom navigation destination.
   final List<Widget> _screens = const [
     OrderPlannerScreen(),
-    Center(child: Text('Saved Order Plans (Coming Soon)')),
-    Center(child: Text('Manage Menu Items (Coming Soon)')),
+    SavedPlansScreen(),
+    Center(child: Text('Manage Menu Items (Coming in Commit 5)')),
   ];
 
   /// Builds the scaffold with the Subway branded AppBar, active screen body, and NavigationBar.

@@ -16,8 +16,9 @@ A Flutter mobile application for planning daily Subway food orders within a targ
   - Built `OrderPlannerScreen` in `lib/screens/order_planner_screen.dart` with daily target cost input, date selection, and quantity controls for Subway menu items.
   - Enforced target budget validation to prevent adding food items that would exceed the daily target cost, displaying immediate inline and SnackBar alerts.
   - Added `insertOrderPlan` in `DatabaseHelper` to save valid daily order plans into SQLite and wired up the bottom `NavigationBar` in `lib/main.dart`.
-
+- [x] **Order Persistence & Date Queries (Commit 4):**
+  - Added `getAllOrderPlans` (sorted by `date DESC`) and `getOrderPlansByDate` queries to `DatabaseHelper`.
+  - Built `SavedPlansScreen` in `lib/screens/saved_plans_screen.dart` to display all saved order plans in descending date order and filter plans by a chosen date with explicit found and not-found states.
 ## Upcoming Features
 
-- [ ] **Order Persistence & Date Queries:** Query saved order plans by date and display all saved plans sorted by date descending.
 - [ ] **Full CRUD Management:** Add, update, and delete both menu items and saved order plans.

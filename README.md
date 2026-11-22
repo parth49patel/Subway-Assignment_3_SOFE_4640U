@@ -19,6 +19,7 @@ A Flutter mobile application for planning daily Subway food orders within a targ
 - [x] **Order Persistence & Date Queries (Commit 4):**
   - Added `getAllOrderPlans` (sorted by `date DESC`) and `getOrderPlansByDate` queries to `DatabaseHelper`.
   - Built `SavedPlansScreen` in `lib/screens/saved_plans_screen.dart` to display all saved order plans in descending date order and filter plans by a chosen date with explicit found and not-found states.
-## Upcoming Features
-
-- [ ] **Full CRUD Management:** Add, update, and delete both menu items and saved order plans.
+- [x] **Full CRUD Management for Menu Items & Order Plans (Commit 5):**
+  - Added `insertFoodItem`, `updateFoodItem`, `deleteFoodItem`, `updateOrderPlan`, and `deleteOrderPlan` methods in `DatabaseHelper`.
+  - Built `MenuManagementScreen` in `lib/screens/menu_management_screen.dart` to add, update, and delete Subway food items.
+  - Added edit and delete workflows to `SavedPlansScreen` so saved order plans can be updated or removed from SQLite.

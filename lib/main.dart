@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/menu_management_screen.dart';
 import 'screens/order_planner_screen.dart';
 import 'screens/saved_plans_screen.dart';
 import 'theme/app_theme.dart';
@@ -41,7 +42,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<Widget> _screens = const [
     OrderPlannerScreen(),
     SavedPlansScreen(),
-    Center(child: Text('Manage Menu Items (Coming in Commit 5)')),
+    MenuManagementScreen(),
   ];
 
   /// Builds the scaffold with the Subway branded AppBar, active screen body, and NavigationBar.
